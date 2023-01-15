@@ -11,7 +11,7 @@ Library ieee;
 USE ieee.std_logic_1164.ALL;
 
 ENTITY priority_encoder IS
-  PORT( d: IN std_logic_vector(7 DOWNTO 0);
+  PORT( d: IN std_logic_vector(7 DOWNTO 1);
 	    y: OUT INTEGER := 3);
 END ENTITY priority_encoder;
 

@@ -22,8 +22,8 @@ ARCHITECTURE encoding OF priority_encoder IS
            "001" WHEN 1,
            "010" WHEN 2 TO 3,
            "011" WHEN 4 TO 7,
-           "100" WHEN 8 TO 15
-           "101" WHEN 16 TO 31
-           "110" WHEN 32 TO 63
+           "100" WHEN 8 TO 15,
+           "101" WHEN 16 TO 31,
+           "110" WHEN 32 TO 63,
            "111" WHEN 64 TO 127;
 END ARCHITECTURE encoding;
