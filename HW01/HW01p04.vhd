@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
 --
--- HW 01 Problem 4 - Priority Ecoder
+-- HW 01 Problem 4 - Priority Encoder
 -- 
 -- Author: Jim Lynch
 -- Date:   01.15.2023
