@@ -20,10 +20,10 @@ ARCHITECTURE encoding OF priority_encoder IS
     WITH d SELECT
       y <= 0 WHEN "0000000",
            1 WHEN "0000001",
-           2 WHEN "0000010" to "0000011",
-           3 WHEN "0000100" to "0000111",
-           4 WHEN "0001000" to "0001111",
-           5 WHEN "0010000" to "0011111",
-           6 WHEN "0100000" to "0111111",
-           7 WHEN "1000000" to "1111111";
+           2 WHEN "0000010" TO "0000011",
+           3 WHEN "0000100" TO "0000111",
+           4 WHEN "0001000" TO "0001111",
+           5 WHEN "0010000" TO "0011111",
+           6 WHEN "0100000" TO "0111111",
+           7 WHEN "1000000" TO "1111111";
 END ARCHITECTURE encoding;
