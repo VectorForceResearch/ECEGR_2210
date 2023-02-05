@@ -26,7 +26,7 @@ BEGIN
         END IF;
     END PROCESS proc1;
     -----------------------------------------------
-    proc2: PROCESS (clk)
+    proc2: PROCESS (enable)
 	BEGIN
         CASE enable IS
             WHEN 0 => data_out <= 'Z';
