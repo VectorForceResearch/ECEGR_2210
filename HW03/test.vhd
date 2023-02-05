@@ -1,10 +1,7 @@
 ----------------------------------------------------------------
---
--- HW 03 Problem 4 - Test
--- 
+-- HW 03 Problem 1 - Test
 -- Author: Jim Lynch
 -- Date:   01.28.2023
---
 ----------------------------------------------------------------
 
 Library ieee;
@@ -24,7 +21,7 @@ BEGIN
         ELSIF (clk = '1') THEN
             q <= d; 
         END IF;
-    END PROCESS
+    END PROCESS;
 END ARCHITECTURE circuit;
 
 ARCHITECTURE circuit OF test IS
@@ -38,7 +35,7 @@ BEGIN
                 q <= d;        
             END IF;
         END IF;
-    END PROCESS
+    END PROCESS;
 END ARCHITECTURE circuit;
 
 ARCHITECTURE circuit OF test IS
@@ -52,6 +49,6 @@ BEGIN
                 q <= d;        
             END IF;
         END IF;
-    END PROCESS
+    END PROCESS;
 END ARCHITECTURE circuit;
 
