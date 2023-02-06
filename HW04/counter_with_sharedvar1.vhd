@@ -8,15 +8,15 @@ Library ieee;
 USE ieee.std_logic_1164.ALL;
 
 ENTITY counter_with_sharedvar IS
-    GENERIC(n: INTEGGER := 7);
-    PORT( clk: IN BIT;
-        enable: IN BIT;
-        data_in: IN std_logic_vector(n+1 DOWNTO 0)
-	    data_out: OUT std_logic_vector(n+1 DOWNTO 0) );
+    GENERIC(n: INTEGER := 7);
+    PORT( clk: IN STD_LOGIC;
+        enable: IN STD_LOGIC;
+        data_in: IN std_logic_vector(n DOWNTO 0);
+	    data_out: OUT std_logic_vector(n DOWNTO 0) );
 END ENTITY counter_with_sharedvar;
 ---------------------------------------------------
 ARCHITECTURE counter OF counter_with_sharedvar IS
-    SIGNAL internal_data: std_logic_vector(n+1 DOWNTO 0);
+    SIGNAL internal_data: std_logic_vector(n DOWNTO 0);
 BEGIN
     -----------------------------------------------
     proc1: PROCESS (clk)	
@@ -29,9 +29,9 @@ BEGIN
     proc2: PROCESS (enable)
 	BEGIN
         CASE enable IS
-            WHEN 0 => data_out <= 'Z';
-            WHEN 1 => data_out <= internal_data;
-            WHEN OTHERS => data_out <= 'Z';
+            WHEN '0' => data_out <= "ZZZZZZZZ";
+            WHEN '1' => data_out <= internal_data;
+            WHEN OTHERS => data_out <= "ZZZZZZZZ";
         END CASE;
     END PROCESS proc2;
 END ARCHITECTURE counter;
