@@ -37,3 +37,8 @@ BEGIN
         --                'Z'             WHEN OTHERS; 
     END PROCESS proc2;
 END ARCHITECTURE counter;
+
+
+force clk 0 0ns, 1 6ns -r 12ns
+force enable 0 0ns, 1 21ns, 0 40ns, 1 45ns, 0 65ns, 1 86ns
+force data_in 16#34 0ns, 16#FF 15ns, 16#0F 25ns, 16#11 35ns, 16#0C 47ns, 16#35 55ns, 16#00 73ns, 16#2F 81ns run 100ns
