@@ -7,7 +7,7 @@
 Library ieee;
 USE ieee.std_logic_1164.ALL;
 
-ENTITY trafficL_light IS
+ENTITY traffic_light IS
     GENERIC(clk: INTEGER := 2*10**7);
     PORT( clock_signal: IN STD_LOGIC;
         --streetA_g, streetA_y, streetA_r: OUT STD_LOGIC;
@@ -18,7 +18,7 @@ ENTITY trafficL_light IS
 END ENTITY traffic_light;
 ---------------------------------------------------
 ARCHITECTURE controller OF traffic_light IS
-    SIGNAL temp: INTEGER RANGE 0 TO 3;
+    SIGNAL temp: INTEGER RANGE 0 TO 4;
     SIGNAL danny_beat: INTEGER RANGE 0 TO 3;
 BEGIN
     -----------------------------------------------
@@ -37,13 +37,13 @@ BEGIN
     proc2: PROCESS (danny_beat)
 	BEGIN
         CASE danny_beat IS
-            WHEN '0' => 
+            WHEN 0 => 
                 danny_street <= "100001";
-            WHEN '1' => 
+            WHEN 1 => 
                 danny_street <= "010001";
-            WHEN '2' => 
+            WHEN 2 => 
                 danny_street <= "001100";
-            WHEN '3' => 
+            WHEN 3 => 
                 danny_street <= "001010";
             WHEN OTHERS => 
                 danny_street <= "111111";
@@ -51,5 +51,7 @@ BEGIN
     END PROCESS proc2;
 END ARCHITECTURE controller;
 
+force clock_signal 0 0ns, 1 10ns -r 20ns
+run 200ns
 
 
