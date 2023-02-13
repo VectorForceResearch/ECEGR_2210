@@ -8,13 +8,13 @@ USE ieee.std_logic_1164.ALL;
 ---------------------------------------------------
 ENTITY counter IS
     PORT( clk: IN STD_LOGIC;
-		count: OUT INTEGER RANGE 0 TO 9); --max_count)
+	count: OUT INTEGER RANGE 0 TO 9); --max_count)
 END ENTITY counter;
 ---------------------------------------------------
 ARCHITECTURE counter OF counter IS
 BEGIN
     PROCESS (clk)
-    VARIABLE temp: INTEGER RANGE 0 TO 9); --(max_count+1);
+    VARIABLE temp: INTEGER RANGE 0 TO 9; --(max_count+1);
 	BEGIN
         IF(rising_edge(clk)) THEN
             temp := temp + 1; 
