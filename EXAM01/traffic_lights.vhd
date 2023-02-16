@@ -38,9 +38,6 @@ ARCHITECTURE controller OF traffic_light IS
 BEGIN
     rtl0: clock_divider     GENERIC MAP(n) PORT MAP(clock_signal, slow_clock);
     rtl1: counter 	        PORT MAP(slow_clock, count);
-
-    enoutSignal <= (enout32 & enout16 & enout8); -- Concatenate the enables for the enable input
-
     -------------sequential logic--------------
     proc1: PROCESS (clock_signal, standby)	
     VARIABLE count: INTEGER RANGE 0 TO (timeMAX+1);
@@ -77,7 +74,6 @@ BEGIN
                     nxt_state <= AYBR;
                     direction := 1;
                 ELSE
-                    store_state <= pre_state;
                     nxt_state <= YY1;
                 END IF;
             WHEN AYBR => 
@@ -93,7 +89,6 @@ BEGIN
                     nxt_state <= ARBG;
                     direction := 1;
                 ELSE
-                    store_state <= pre_state;
                     nxt_state <= YY1;
                 END IF;
             WHEN ARBG => 
@@ -109,7 +104,6 @@ BEGIN
                     nxt_state <= AYBY;
                     direction := 1;
                 ELSE
-                    store_state <= pre_state;
                     nxt_state <= YY1;
                 END IF;
             WHEN ARBY => 
@@ -125,7 +119,6 @@ BEGIN
                     nxt_state <= ARBG;
                     direction := 1;
                 ELSE
-                    store_state <= pre_state;
                     nxt_state <= YY1;
                 END IF;
             WHEN YY1 =>
