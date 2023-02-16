@@ -1,7 +1,7 @@
 ---------------------------------------------------
 -- EXAM 01 -Traffic Light Controller
 -- Author: Jim Lynch
--- Date:   02.12.2023
+-- Date:   02.12.2023 - 02.16.2023
 ---------------------------------------------------
 Library ieee;
 USE ieee.std_logic_1164.ALL;
@@ -149,7 +149,13 @@ BEGIN
 		        ELSE
 		            direction := 0;
 		        END IF;
-	        WHEN OTHERS => danny_street <= "111111";
+	        WHEN OTHERS => --danny_street <= "111111";
+                streetA_g <= '1';
+                streetA_y <= '1';
+                streetA_r <= '1';
+                streetB_g <= '1';
+                streetB_y <= '1';
+                streetB_r <= '1';
         END CASE;
     END PROCESS proc2;
 END ARCHITECTURE controller;
