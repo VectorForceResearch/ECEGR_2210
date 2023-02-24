@@ -1,0 +1,55 @@
+# Copyright (C) 2021  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and any partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details, at
+# https://fpgasoftware.intel.com/eula.
+
+# Quartus Prime Version 21.1.0 Build 842 10/21/2021 SJ Lite Edition
+# File: C:\Users\takach\Documents\aaTAKACH\_COURSES\_REQUIRED-COURSES\ECEGR 2210 - Programmable Devices\ECEGR 2210 - Programmable Devices_w2023\QUARTUS_PROJECTS\VGA_stripes\VGA_lab_DE2_115.csv
+# Generated on: Mon Feb  6 17:25:24 2023
+
+# Note: The column header names should not be changed if you wish to import this .csv file into the Quartus Prime software.
+
+To,Direction,Location,I/O Bank,VREF Group,I/O Standard,Reserved,Current Strength,Slew Rate,Differential Pair,Strict Preservation
+blue[7],Output,pin_d12,8,B8_N0,,,,,,
+blue[6],Output,PIN_D11,8,B8_N1,,,,,,
+blue[5],Output,pin_C12,8,B8_N0,,,,,,
+blue[4],Output,PIN_A11,8,B8_N0,,,,,,
+blue[3],Output,PIN_B11,8,B8_N0,,,,,,
+blue[2],Output,pin_c11,8,B8_N1,,,,,,
+blue[1],Output,pin_a10,8,B8_N0,,,,,,
+blue[0],Output,pin_b10,8,B8_N0,,,,,,
+blue_switch,Input,,,,,,,,,
+clock50MHz,Input,PIN_Y2,2,B2_N0,,,,,,
+green[7],Output,pin_c9,8,B8_N1,,,,,,
+green[6],Output,pin_f10,8,B8_N1,,,,,,
+green[5],Output,pin_b8,8,B8_N1,,,,,,
+green[4],Output,pin_c8,8,B8_N1,,,,,,
+green[3],Output,pin_h12,8,B8_N1,,,,,,
+green[2],Output,pin_f8,8,B8_N2,,,,,,
+green[1],Output,pin_g11,8,B8_N1,,,,,,
+green[0],Output,pin_g8,8,B8_N2,,,,,,
+green_switch,Input,,,,,,,,,
+hsync,Output,pin_g13,8,B8_N0,,,,,,
+nblank,Output,pin_f11,8,B8_N1,,,,,,
+nsync,Output,pin_c10,8,B8_N0,,,,,,
+pixel_clk,Output,pin_a12,8,B8_N0,,,,,,
+red[7],Output,pin_h10,8,B8_N1,,,,,,
+red[6],Output,pin_h8,8,B8_N2,,,,,,
+red[5],Output,pin_j12,8,B8_N0,,,,,,
+red[4],Output,pin_g10,8,B8_N1,,,,,,
+red[3],Output,pin_f12,8,B8_N1,,,,,,
+red[2],Output,pin_d10,8,B8_N1,,,,,,
+red[1],Output,pin_E11,8,B8_N1,,,,,,
+red[0],Output,PIN_E12,8,B8_N1,,,,,,
+red_switch,Input,,,,,,,,,
+vsync,Output,PIN_C13,8,B8_N0,,,,,,

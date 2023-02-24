@@ -1,20 +1,17 @@
-----------------------------------------------------------------
---
+---------------------------------------------------
 -- Lab 01 - Seven-Segment Decoder
 -- This is the decoder VHDL for running a seven-segment display.
 -- Author: Jim Lynch
 -- Date:   01.10.2023
---
-----------------------------------------------------------------
-
+---------------------------------------------------
 Library ieee;
 USE ieee.std_logic_1164.ALL;
-
+---------------------------------------------------
 ENTITY sevenseg_disp IS
 	PORT( input: IN std_logic_vector(3 DOWNTO 0);
-			output: OUT std_logic_vector(6 DOWNTO 0) );
+		output: OUT std_logic_vector(6 DOWNTO 0) );
 END;
-
+---------------------------------------------------
 ARCHITECTURE encoding OF sevenseg_disp IS
 	SIGNAL internal: std_logic_vector(7 DOWNTO 0);
 	begin
@@ -32,3 +29,4 @@ ARCHITECTURE encoding OF sevenseg_disp IS
 							--x"71" WHEN OTHERS;
 		output <= internal(6 DOWNTO 0);
 END;
+---------------------------------------------------
