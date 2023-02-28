@@ -11,6 +11,7 @@
 ------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 ------------------------------------------------------------------
 entity make_image0 is
 	port(
@@ -20,19 +21,36 @@ entity make_image0 is
 		red, green, blue: out std_logic_vector(7 downto 0) ;
 		red_switch, green_switch, blue_switch: in std_logic) ;
 end;
+
+
+entity font_rom is port(
+clk: in std_logic;
+addr: in std_logic_vector(10 downto 0); data: out std_logic_vector(7 downto 0)
+);
+end font_rom;
 		
+
+
 architecture myimage of make_image0 is
-	
-	SIGNAL images: STD_LOGIC_VECTOR(2 DOWNTO 0);
+	-- Boarder --
+	SIGNAL boarder_on: 		STD_LOGIC;
+	SIGNAL boarder_y_pos: 	integer range 0 to 480; 
+	SIGNAL boarder_x_pos:   integer range 0 to 640;
+
+
+
 	-- Boundaries --
 	CONSTANT bottom_of_screen: integer := 460;
 	CONSTANT top_of_screen: integer := 19;
 	CONSTANT right_of_screen: integer := 620;
 	CONSTANT left_of_screen: integer := 19;
-	-- Boarder --
-	SIGNAL boarder_on: 		STD_LOGIC;
-	SIGNAL boarder_y_pos: 	integer range 0 to 480; 
-	SIGNAL boarder_x_pos:   integer range 0 to 640;
+	-- Digit Placement --
+	CONSTANT bottom_of_screen: integer := 460;
+	CONSTANT top_of_screen: integer := 19;
+	CONSTANT right_of_screen: integer := 620;
+	CONSTANT left_of_screen: integer := 19;
+
+	SIGNAL images: STD_LOGIC_VECTOR(3 DOWNTO 0);
 	-- Paddle --
 	SIGNAL paddle_on: 		STD_LOGIC;
 	SIGNAL paddle_size: 	integer range 0 to 20;   
@@ -95,9 +113,12 @@ architecture myimage of make_image0 is
 									"11111111111" );
 	
 BEGIN
-	solid_square_size <= rsolid_square_shape'length-1; --size of ball
+	solid_square_size	<= solid_square_shape'length-1; --size of solid square
+	boxed_square_size 	<= solid_square_shape'length-1; --size of boxed square
+	paddle_y_pos 		<= bottom_of_screen + paddle_shape / 2;   -- x position of ball's left top corner 
+
+
 	--ball_x_pos <= 320;   -- x position of ball's left top corner 
-	paddle_y_pos <= ;   -- x position of ball's left top corner 
 	-- x position of the square goes from (ball_x_pos) to (ball_x_pos + size)
 	-- y position of the square goes from (ball_y_pos) to (ball_y_pos + size)
 ------------------------------------
