@@ -22,15 +22,6 @@ entity make_image0 is
 		red_switch, green_switch, blue_switch: in std_logic) ;
 end;
 
-
-entity font_rom is port(
-clk: in std_logic;
-addr: in std_logic_vector(10 downto 0); data: out std_logic_vector(7 downto 0)
-);
-end font_rom;
-		
-
-
 architecture myimage of make_image0 is
 	-- Boarder --
 	SIGNAL boarder_on: 		STD_LOGIC;
@@ -44,15 +35,15 @@ architecture myimage of make_image0 is
 	CONSTANT left_of_screen: integer := 19;
 
 	-- Digit Placement --
-	--CONSTANT bottom_of_screen: integer := 460;
-	--CONSTANT top_of_screen: integer := 19;
-	--CONSTANT right_of_screen: integer := 620;
-	--CONSTANT left_of_screen: integer := 19;
+	CONSTANT left_x: INTEGER := 60;
+	CONSTANT left_y: INTEGER := 60;
+	CONSTANT right_x: INTEGER := 400;
+	CONSTANT right_y: INTEGER := 60;
 
 	-- Digit Design --
 	--TYPE digit6x8 IS ARRAY (1 TO 8, 1 TO 6) OF STD_LOGIC;
 	--TYPE digit8x16 IS ARRAY (1 TO 16, 1 TO 8) OF STD_LOGIC;
-	TYPE digit8x16 IS ARRAY (0 TO 8) OF STD_LOGIC_VECOR(0 TO 15);
+	TYPE digit8x16 IS ARRAY (0 TO 8) OF STD_LOGIC_VECOR (0 TO 15);
 	SIGNAL digit_solid_U, digit_solid_T: digit8x16;
 	SIGNAL digit_boxed_U, digit_boxed_T: digit8x16;	 
 
@@ -263,6 +254,23 @@ architecture myimage of make_image0 is
 	"00000000" -- f
 	);
 
+	FUNCTION number_grabber (SIGNAL input: INTEGER) RETURN digit8x16 IS
+	BEGIN
+		CASE input IS
+			WHEN 0 => RETURN zero;
+			WHEN 1 => RETURN one;
+			WHEN 2 => RETURN two;
+			WHEN 3 => RETURN three;
+			WHEN 4 => RETURN four;
+			WHEN 5 => RETURN five;
+			WHEN 6 => RETURN six;
+			WHEN 7 => RETURN seven;
+			WHEN 8 => RETURN eight;
+			WHEN 9 => RETURN nine;
+		END CASE;
+	END number_grabber;
+
+
 	SIGNAL images: STD_LOGIC_VECTOR(3 DOWNTO 0);
 	-- Paddle --
 	SIGNAL paddle_on: 		STD_LOGIC;
@@ -292,6 +300,20 @@ architecture myimage of make_image0 is
 	SIGNAL boxed_square_x_motion: 	integer range -10 to 10; 
 	SIGNAL boxed_square_y_pos: 	 	integer range 0 to 480; 
 	SIGNAL boxed_square_x_pos:    	integer range 0 to 640; 
+
+	-- Solid SCORE --
+	SIGNAL solid_score_on: 		STD_LOGIC;
+	SIGNAL solid_score_size : 		integer range 0 to 10;   
+	SIGNAL solid_score_y_motion: 	integer range -10 to 10; 
+	SIGNAL solid_score_x_motion: 	integer range -10 to 10; 
+	SIGNAL solid_score_y_pos: 	 	integer range 0 to 480; 
+	SIGNAL solid_score_x_pos:    	integer range 0 to 640; 
+	-- Boxed SCORE --
+	SIGNAL boxed_score_on: 		STD_LOGIC;
+	SIGNAL boxed_score_y_motion: 	integer range -10 to 10; 
+	SIGNAL boxed_score_x_motion: 	integer range -10 to 10; 
+	SIGNAL boxed_score_y_pos: 	 	integer range 0 to 480; 
+	SIGNAL boxed_score_x_pos:    	integer range 0 to 640; 	
 
 	TYPE my_rom IS ARRAY (0 TO 5) OF STD_LOGIC_VECTOR (0 TO 60);
 	CONSTANT paddle_shape: my_rom :=( "1111111111111111111111111111111111111111111111111111111111111",
@@ -325,17 +347,29 @@ architecture myimage of make_image0 is
 									"10000000001",
 									"11111111111" );
 	
+
+
+
 BEGIN
+	-- SET DIGIT LOCATION --
+
+
+	-- MAKE OBJECT SIZES --
 	solid_square_size	<= solid_square_shape'length-1; --size of solid square
 	boxed_square_size 	<= solid_square_shape'length-1; --size of boxed square
+
+	-- SET PADDLE LOCATION --
 	paddle_y_pos 		<= bottom_of_screen + paddle_shape / 2;   -- x position of ball's left top corner 
 
 
 	--ball_x_pos <= 320;   -- x position of ball's left top corner 
 	-- x position of the square goes from (ball_x_pos) to (ball_x_pos + size)
 	-- y position of the square goes from (ball_y_pos) to (ball_y_pos + size)
+
 ------------------------------------
-	--check if pixel scanned in located within the square ball
+-- CHECK THE LOCATION OF THE OBJECTS THAT CAN CHANGE LOCATIONS --
+
+	--BOARDER check if pixel scanned in located within the square ball
 	check_pixel_boarder: PROCESS (pixel_column, pixel_row)
    	BEGIN	                                
 		IF (pixel_column > right_of_screen AND pixel_column <= 639) or (pixel_column < left_of_screen AND pixel_column >= 0) or  
@@ -346,8 +380,8 @@ BEGIN
 			boarder_on <= '0';
 		END IF;
 	END PROCESS;
-------------------------------------
-	--check if pixel scanned in located within the square ball
+
+	--SOLID SQUARE check if pixel scanned in located within the square ball
 	check_pixel_ball:  PROCESS (ball_x_pos, ball_y_pos, pixel_column, pixel_row, size)
    	BEGIN	                                
 		IF (pixel_column >= ball_x_pos) 
@@ -367,8 +401,8 @@ BEGIN
 			ball_on <= '0';
 		END IF;
 	END PROCESS;
---------------------------------
-		--check if pixel scanned in located within the square ball
+
+	--BOXED SQUARE check if pixel scanned in located within the square ball
 	check_pixel_paddle:  PROCESS (paddle_x_pos, paddle_y_pos, pixel_column, pixel_row, paddle_size)
    	BEGIN	                                
 		IF (pixel_column >= paddle_x_pos) AND (pixel_column <= paddle_x_pos + size) AND  
@@ -457,113 +491,39 @@ BEGIN
 		ball_x_pos <= ball_x_pos + ball_x_motion;
 		ball_y_pos <= ball_y_pos + ball_y_motion;
 	END PROCESS;
-	
---	
---	paddle_motion: PROCESS			
---	BEGIN
---		--MOTION: FOR i in 50 to 430 GENERATE	
---		WAIT UNTIL (vsync'event AND vsync = '1');		         		
---		IF (ball_x_pos + size) >= right_of_screen  THEN --AND (ball_y_pos + size) = bottom_of_screen THEN	  --reached bottom of monitor  
---			ball_x_motion <= 0;		
---		ELSIF (ball_x_pos + size) = (paddle_x_pos + paddle_size - 10)  THEN --AND (ball_y_pos + size) = bottom_of_screen THEN	  --reached bottom of monitor  
---			ball_x_motion <= 0;				-- start moving up by 1 pixel
---		ELSIF 
---			(ball_x_pos + size) <= left_of_screen THEN --AND (ball_y_pos + size) = top_of_screen THEN	 		     -- reached top of monitor   	     	 		
---			paddle_x_motion <= 0;                         -- start moving down by 1 pixel
---		ELSIF 
---			(paddle_y_pos + size) <= top_of_screen THEN --AND (ball_y_pos + size) = top_of_screen THEN	 		     -- reached top of monitor   	     	 		
---			paddle_y_motion <= 0; 		
---		ELSIF 
---			(paddle_y_pos + size) >= bottom_of_screen THEN --AND (ball_y_pos + size) = top_of_screen THEN	 		     -- reached top of monitor   	     	 		
---			paddle_y_motion <= 0; 			
---		END IF;
---		
---		ball_x_pos <= ball_x_pos + paddle_x_motion;
---		ball_y_pos <= ball_y_pos + paddle_y_motion;
---	END PROCESS;
 
+
+	---------------------------------
+	--update position of ball once every screen refresh cycle
+	SCORE: PROCESS			
+	BEGIN
+
+		
+		WAIT UNTIL (vsync'event AND vsync = '1');		         		
+		IF (ball_x_pos + size) >= right_of_screen  THEN --AND (ball_y_pos + size) = bottom_of_screen THEN	  --reached bottom of monitor  
+			ball_x_motion <= -1;		
+--		ELSIF (ball_x_pos + size) = (paddle_x_pos + paddle_size - 10)  THEN --AND (ball_y_pos + size) = bottom_of_screen THEN	  --reached bottom of monitor  
+--			ball_x_motion <= 1;				-- start moving up by 1 pixel
+		ELSIF 
+			(ball_x_pos + size) <= left_of_screen THEN --AND (ball_y_pos + size) = top_of_screen THEN	 		     -- reached top of monitor   	     	 		
+			ball_x_motion <= 8;                         -- start moving down by 1 pixel
+		ELSIF 
+			(ball_y_pos + size) <= top_of_screen THEN --AND (ball_y_pos + size) = top_of_screen THEN	 		     -- reached top of monitor   	     	 		
+			ball_y_motion <= 8; 		
+		ELSIF 
+			(ball_y_pos + size) >= bottom_of_screen THEN --AND (ball_y_pos + size) = top_of_screen THEN	 		     -- reached top of monitor   	     	 		
+			ball_y_motion <= -1; 			
+		END IF;
+		
+		digit_solid_U <= number_grabber(scoreSolid_U);
+		digit_solid_T <= number_grabber(scoreSolid_T);
+		digit_boxed_U <= number_grabber(scoreSolid_U); 
+		digit_boxed_T <= number_grabber(scoreSolid_T);	 
+	END PROCESS;
+	
 END;
 
 
 
 
-
-
-
-
---architecture image of make_image0 is
---BEGIN 
---	stripes: PROCESS(pixel_row, red_switch, green_switch, blue_switch)		
---	BEGIN	
---	CASE pixel_column IS  --pixel_row
---	WHEN 420 TO 480 =>
---				red  <=  (OTHERS => '1');  
---				green <= (OTHERS => '0'); 
---				blue  <= (OTHERS => '0');
---	WHEN 360 TO 419 =>	
---				red  <=  (OTHERS => '0');  
---				green <= (OTHERS => '1'); 
---				blue  <= (OTHERS => '0'); 
---	WHEN 300 TO 359 =>	
---				red  <=  (OTHERS => '0');  
---				green <= (OTHERS => '0'); 
---				blue  <= (OTHERS => '1'); 
---	WHEN 240 TO 299 =>	
---				red  <=  (OTHERS => '1');  
---				green <= (OTHERS => '1'); 
---				blue  <= (OTHERS => '0'); 
---	WHEN 180 TO 239 =>	
---				red  <=  (OTHERS => '0');  
---				green <= (OTHERS => '1'); 
---				blue  <= (OTHERS => '1'); 				
---	WHEN 120 TO 179 => 	
---				red  <=  (OTHERS => '1');  
---				green <= (OTHERS => '0'); 
---				blue  <= (OTHERS => '1'); 						
---	WHEN 60 TO 119 => 
---				red  <=  "11101101";  
---				green <= "10111001";
---				blue  <= "01101111"; 				
---	WHEN OTHERS  => 
---				red   <= (7 => red_switch, others => '0');  
---				green <= (7 => green_switch, others => '0'); 
---				blue  <= (7 => blue_switch, others => '0'); 
---	END CASE;	
---	END PROCESS stripes;
---END;
-	
--- same as above but using the IF statement
---		IF pixel_row >= 420 THEN	      			
---				red  <=  (OTHERS => '1');  
---				green <= (OTHERS => '0'); 
---				blue  <= (OTHERS => '0'); 
---		ELSIF pixel_row >= 360 THEN
---				red  <=  (OTHERS => '0');  
---				green <= (OTHERS => '1'); 
---				blue  <= (OTHERS => '0'); 
---		ELSIF pixel_row >= 300 THEN
---				red  <=  (OTHERS => '0');  
---				green <= (OTHERS => '0'); 
---				blue  <= (OTHERS => '1'); 
---		ELSIF pixel_row >= 240 THEN
---				red  <=  (OTHERS => '1');  
---				green <= (OTHERS => '1'); 
---				blue  <= (OTHERS => '0'); 
---		ELSIF pixel_row >= 180 THEN
---				red  <=  (OTHERS => '0');  
---				green <= (OTHERS => '1'); 
---				blue  <= (OTHERS => '1'); 				
---		ELSIF pixel_row >= 120 THEN
---				red  <=  (OTHERS => '1');  
---				green <= (OTHERS => '0'); 
---				blue  <= (OTHERS => '1'); 						
---		ELSIF pixel_row >= 60 THEN
---				red  <=  "11101101";  
---				green <= "10111001";
---				blue  <= "01101111"; 				
---		ELSE 
---				red   <= (7 => red_switch, others => '0');  
---				green <= (7 => green_switch, others => '0'); 
---				blue  <= (7 => blue_switch, others => '0'); 
---		END IF;
 
