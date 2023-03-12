@@ -11,7 +11,8 @@
 ------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+use ieee.math_real.all;    	-- for uniform & trunc functions
+use ieee.numeric_std.all;	-- for to_unsigned functionv
 ------------------------------------------------------------------
 entity make_image0 is
 	port(
@@ -347,7 +348,20 @@ architecture myimage of make_image0 is
 									"10000000001",
 									"11111111111" );
 	
+impure function rand_real(min_val, max_val : real) return real is
+	variable r : real;
+	begin
+	uniform(seed1, seed2, r);
+	return r * (max_val - min_val) + min_val;
+	end function;
 
+impure function rand_int(min_val, max_val : integer) return integer is
+	variable r : real;
+	begin
+	uniform(seed1, seed2, r);
+	return integer(
+		round(r * real(max_val - min_val + 1) + real(min_val) - 0.5));
+	end function;
 
 
 BEGIN
